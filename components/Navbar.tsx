@@ -18,30 +18,37 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems: { name: string; view: View }[] = [
+  const internalLinks: { name: string; view: View }[] = [
     { name: 'About', view: 'ABOUT' },
-    { name: 'KaiCA-L', view: 'KAICA-L' },
     { name: '공지사항', view: 'NOTICE' },
   ];
 
+  const externalLinks = [
+    { name: 'Reservation', url: 'https://ju8gdhk8ep.skywork.website/' },
+    { name: 'KaiCA-L', url: 'https://hkpz5ks448.skywork.website/' },
+    { name: 'K-Ria', url: 'https://j2su6uas28.skywork.website' },
+    { name: '연세대', url: 'https://go.yonsei.ac.kr/fro_end/html/main/' },
+    { name: 'WKC', url: 'https://w-kpop.com/' },
+  ];
+
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-700 ${scrolled ? 'py-4' : 'py-8'}`}>
-      <div className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-700 ${scrolled ? 'glass rounded-full shadow-lg shadow-zinc-200/20 py-3' : ''}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-700 ${scrolled ? 'py-4' : 'py-6'}`}>
+      <div className={`max-w-[95%] mx-auto px-6 flex items-center justify-between transition-all duration-700 ${scrolled ? 'glass rounded-full shadow-lg shadow-zinc-200/20 py-3' : ''}`}>
         <button 
           onClick={() => setView('HOME')} 
-          className="text-2xl tracking-tighter text-zinc-900 font-serif font-semibold flex items-center gap-1 group"
+          className="text-xl md:text-2xl tracking-tighter text-zinc-900 font-serif font-semibold flex items-center gap-1 group whitespace-nowrap"
         >
           <span className="text-rose-600 transition-transform duration-500 group-hover:rotate-12">Kai</span>
           <span className="font-light italic">Culture</span>
-          <span className="hidden md:inline ml-1 opacity-50 font-sans text-[10px] tracking-[0.2em] uppercase font-bold">Academy</span>
+          <span className="hidden lg:inline ml-1 opacity-50 font-sans text-[9px] tracking-[0.2em] uppercase font-bold">Academy</span>
         </button>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {menuItems.map((item) => (
+        <nav className="hidden xl:flex items-center gap-6">
+          {internalLinks.map((item) => (
             <button
               key={item.view}
               onClick={() => setView(item.view)}
-              className={`text-[13px] font-medium tracking-wide transition-all relative group ${
+              className={`text-[12px] font-bold tracking-tight transition-all relative group uppercase ${
                 currentView === item.view ? 'text-rose-600' : 'text-zinc-500 hover:text-zinc-900'
               }`}
             >
@@ -50,39 +57,55 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
             </button>
           ))}
           
-          <div className="w-[1px] h-4 bg-zinc-200 mx-2"></div>
+          <div className="w-[1px] h-3 bg-zinc-200 mx-1"></div>
+
+          {externalLinks.map((item) => (
+            <a
+              key={item.url}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12px] font-bold text-zinc-400 hover:text-rose-600 transition-all uppercase tracking-tight flex items-center gap-1"
+            >
+              {item.name}
+              <svg className="w-2.5 h-2.5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+            </a>
+          ))}
+          
+          <div className="w-[1px] h-3 bg-zinc-200 mx-1"></div>
           
           {user ? (
-            <div className="flex items-center gap-6">
-              <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
-                {user.username} {user.role === 'admin' && '(ADMIN)'}
-              </span>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] font-black text-zinc-900 leading-none">{user.username}</span>
+                {user.tier && <span className="text-[8px] font-bold text-rose-500 tracking-widest uppercase">{user.tier}</span>}
+              </div>
               {user.role === 'admin' && (
                 <button 
                   onClick={() => setView('ADMIN')}
-                  className={`text-[11px] font-bold px-4 py-1.5 rounded-full border border-rose-200 text-rose-600 hover:bg-rose-50 transition-all uppercase tracking-widest ${currentView === 'ADMIN' ? 'bg-rose-50' : ''}`}
+                  className={`text-[10px] font-bold px-3 py-1 rounded-full border border-rose-200 text-rose-600 hover:bg-rose-50 transition-all uppercase tracking-widest ${currentView === 'ADMIN' ? 'bg-rose-50' : ''}`}
                 >
                   Admin
                 </button>
               )}
               <button 
                 onClick={onLogout}
-                className="text-[11px] font-bold text-zinc-900 hover:text-rose-600 transition-colors uppercase tracking-widest"
+                className="text-[10px] font-bold text-zinc-400 hover:text-zinc-900 transition-colors uppercase"
               >
                 Logout
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button 
                 onClick={() => setView('LOGIN')}
-                className="text-[11px] font-bold text-zinc-500 hover:text-zinc-900 px-4 py-2 transition-all uppercase tracking-widest"
+                className="text-[10px] font-bold text-zinc-500 px-3 py-1.5 uppercase"
               >
                 Login
               </button>
               <button 
                 onClick={() => setView('SIGNUP')}
-                className="text-[11px] font-bold text-white bg-zinc-900 px-6 py-2.5 rounded-full hover:bg-rose-600 transition-all uppercase tracking-widest shadow-xl shadow-zinc-900/10"
+                className="text-[10px] font-bold text-white bg-zinc-950 px-5 py-2 rounded-full hover:bg-rose-600 transition-all uppercase shadow-lg shadow-zinc-900/10"
               >
                 Join
               </button>
@@ -90,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
           )}
         </nav>
 
-        <button className="md:hidden text-zinc-900 p-2">
+        <button className="xl:hidden text-zinc-900 p-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8h16M4 16h16" />
           </svg>

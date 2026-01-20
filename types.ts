@@ -1,9 +1,13 @@
 
+export type UserTier = 'Diamond' | 'Gold' | 'Silver';
+
 export interface User {
   id: string;
   username: string;
+  email?: string;
   password?: string;
   role: 'user' | 'admin';
+  tier?: UserTier;
 }
 
 export interface Notice {

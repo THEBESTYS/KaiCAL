@@ -8,6 +8,7 @@ interface SignupProps {
 
 const Signup: React.FC<SignupProps> = ({ setView }) => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -37,8 +38,10 @@ const Signup: React.FC<SignupProps> = ({ setView }) => {
     const newUser: User = {
       id: Date.now().toString(),
       username,
+      email,
       password,
-      role: 'user'
+      role: 'user',
+      tier: 'Silver' // Default tier
     };
 
     users.push(newUser);
@@ -48,65 +51,79 @@ const Signup: React.FC<SignupProps> = ({ setView }) => {
   };
 
   return (
-    <div className="fade-in min-h-[70vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-zinc-100">
+    <div className="fade-in min-h-[85vh] flex items-center justify-center py-20 px-4 bg-zinc-50">
+      <div className="max-w-md w-full space-y-8 bg-white p-12 rounded-[2.5rem] shadow-2xl shadow-zinc-200/50 border border-zinc-100">
         <div className="text-center">
-          <h2 className="text-3xl font-serif font-bold text-zinc-900 mb-2">Sign Up</h2>
-          <p className="text-sm text-zinc-500">카이 컬처 아카데미의 회원이 되어보세요.</p>
+          <h2 className="text-4xl font-serif italic text-zinc-900 mb-2">Join Us</h2>
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">카이 컬처 아카데미의 회원이 되어보세요.</p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <div className="text-rose-500 text-xs text-center font-bold bg-rose-50 p-2 rounded-lg">{error}</div>}
+        <form className="mt-10 space-y-5" onSubmit={handleSubmit}>
+          {error && <div className="text-rose-500 text-[10px] text-center font-bold bg-rose-50 p-3 rounded-xl uppercase tracking-wider">{error}</div>}
+          
           <div className="space-y-4">
-            <div>
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1 mb-2 block">Username</label>
+            <div className="group">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-2 block group-focus-within:text-rose-500 transition-colors">Username</label>
               <input
                 type="text"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
-                placeholder="아이디를 입력하세요"
+                className="w-full px-5 py-3.5 rounded-2xl border border-zinc-100 bg-zinc-50 focus:outline-none focus:ring-4 focus:ring-rose-500/5 focus:border-rose-500/30 focus:bg-white transition-all"
+                placeholder="아이디"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div>
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1 mb-2 block">Password</label>
+            
+            <div className="group">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-2 block group-focus-within:text-rose-500 transition-colors">Email Address</label>
               <input
-                type="password"
+                type="email"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
-                placeholder="비밀번호를 입력하세요"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-5 py-3.5 rounded-2xl border border-zinc-100 bg-zinc-50 focus:outline-none focus:ring-4 focus:ring-rose-500/5 focus:border-rose-500/30 focus:bg-white transition-all"
+                placeholder="이메일 주소"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div>
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1 mb-2 block">Confirm Password</label>
-              <input
-                type="password"
-                required
-                className="w-full px-4 py-3 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
-                placeholder="비밀번호 확인"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="group">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-2 block group-focus-within:text-rose-500 transition-colors">Password</label>
+                <input
+                  type="password"
+                  required
+                  className="w-full px-5 py-3.5 rounded-2xl border border-zinc-100 bg-zinc-50 focus:outline-none focus:ring-4 focus:ring-rose-500/5 focus:border-rose-500/30 focus:bg-white transition-all"
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="group">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-2 block group-focus-within:text-rose-500 transition-colors">Confirm</label>
+                <input
+                  type="password"
+                  required
+                  className="w-full px-5 py-3.5 rounded-2xl border border-zinc-100 bg-zinc-50 focus:outline-none focus:ring-4 focus:ring-rose-500/5 focus:border-rose-500/30 focus:bg-white transition-all"
+                  placeholder="비밀번호 확인"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-zinc-900 hover:bg-zinc-800 transition-colors focus:outline-none"
-            >
-              회원가입 하기
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-5 px-4 rounded-2xl text-[11px] font-bold text-white bg-zinc-900 hover:bg-rose-600 transition-all uppercase tracking-[0.2em] shadow-xl shadow-zinc-900/10 mt-4 active:scale-95"
+          >
+            Create Account
+          </button>
         </form>
-        <div className="text-center pt-4">
+        <div className="text-center pt-2">
           <button 
             onClick={() => setView('LOGIN')}
-            className="text-sm font-medium text-rose-600 hover:underline"
+            className="text-[10px] font-bold text-zinc-400 hover:text-rose-600 uppercase tracking-widest transition-colors"
           >
-            이미 계정이 있으신가요? 로그인
+            Already have an account? Login
           </button>
         </div>
       </div>
