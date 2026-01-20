@@ -19,9 +19,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
   }, []);
 
   const menuItems: { name: string; view: View }[] = [
-    { name: 'Philosophy', view: 'ABOUT' },
-    { name: 'Technology', view: 'KAICA-L' },
-    { name: 'Archives', view: 'NOTICE' },
+    { name: 'About', view: 'ABOUT' },
+    { name: 'KaiCA-L', view: 'KAICA-L' },
+    { name: '공지사항', view: 'NOTICE' },
   ];
 
   return (
@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
           <span className="hidden md:inline ml-1 opacity-50 font-sans text-[10px] tracking-[0.2em] uppercase font-bold">Academy</span>
         </button>
 
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-8">
           {menuItems.map((item) => (
             <button
               key={item.view}
@@ -55,13 +55,21 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
           {user ? (
             <div className="flex items-center gap-6">
               <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
-                {user.username}
+                {user.username} {user.role === 'admin' && '(ADMIN)'}
               </span>
+              {user.role === 'admin' && (
+                <button 
+                  onClick={() => setView('ADMIN')}
+                  className={`text-[11px] font-bold px-4 py-1.5 rounded-full border border-rose-200 text-rose-600 hover:bg-rose-50 transition-all uppercase tracking-widest ${currentView === 'ADMIN' ? 'bg-rose-50' : ''}`}
+                >
+                  Admin
+                </button>
+              )}
               <button 
                 onClick={onLogout}
                 className="text-[11px] font-bold text-zinc-900 hover:text-rose-600 transition-colors uppercase tracking-widest"
               >
-                Sign out
+                Logout
               </button>
             </div>
           ) : (
