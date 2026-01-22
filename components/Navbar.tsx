@@ -18,12 +18,11 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const internalLinks: { name: string; view: View }[] = [
-    { name: 'About', view: 'ABOUT' },
-    { name: '공지사항', view: 'NOTICE' },
-  ];
+  const firstInternalLink: { name: string; view: View } = { name: 'About', view: 'ABOUT' };
+  const lastInternalLink: { name: string; view: View } = { name: '공지사항', view: 'NOTICE' };
 
   const externalLinks = [
+    { name: 'S-Lotte', url: 'https://skaical.netlify.app/' },
     { name: 'Reservation', url: 'https://ju8gdhk8ep.skywork.website/' },
     { name: 'KaiCA-L', url: 'https://hkpz5ks448.skywork.website/' },
     { name: 'K-Ria', url: 'https://j2su6uas28.skywork.website' },
@@ -31,31 +30,32 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
     { name: 'WKC', url: 'https://w-kpop.com/' },
   ];
 
+  const NavButton = ({ item }: { item: { name: string; view: View } }) => (
+    <button
+      onClick={() => setView(item.view)}
+      className={`text-[12px] font-bold tracking-tight transition-all relative group uppercase ${
+        currentView === item.view ? 'text-rose-600' : 'text-zinc-500 hover:text-zinc-900'
+      }`}
+    >
+      {item.name}
+      <span className={`absolute -bottom-1 left-0 w-full h-[1px] bg-rose-600 origin-right transition-transform duration-500 scale-x-0 group-hover:scale-x-100 group-hover:origin-left ${currentView === item.view ? 'scale-x-100' : ''}`}></span>
+    </button>
+  );
+
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-700 ${scrolled ? 'py-4' : 'py-6'}`}>
-      <div className={`max-w-[95%] mx-auto px-6 flex items-center justify-between transition-all duration-700 ${scrolled ? 'glass rounded-full shadow-lg shadow-zinc-200/20 py-3' : ''}`}>
+      <div className={`max-w-[98%] mx-auto px-4 flex items-center justify-between transition-all duration-700 ${scrolled ? 'glass rounded-full shadow-lg shadow-zinc-200/20 py-3' : ''}`}>
         <button 
           onClick={() => setView('HOME')} 
-          className="text-xl md:text-2xl tracking-tighter text-zinc-900 font-serif font-semibold flex items-center gap-1 group whitespace-nowrap"
+          className="text-xl md:text-2xl tracking-tighter text-zinc-900 font-serif font-semibold flex items-center gap-1 group whitespace-nowrap px-2"
         >
           <span className="text-rose-600 transition-transform duration-500 group-hover:rotate-12">Kai</span>
           <span className="font-light italic">Culture</span>
           <span className="hidden lg:inline ml-1 opacity-50 font-sans text-[9px] tracking-[0.2em] uppercase font-bold">Academy</span>
         </button>
 
-        <nav className="hidden xl:flex items-center gap-6">
-          {internalLinks.map((item) => (
-            <button
-              key={item.view}
-              onClick={() => setView(item.view)}
-              className={`text-[12px] font-bold tracking-tight transition-all relative group uppercase ${
-                currentView === item.view ? 'text-rose-600' : 'text-zinc-500 hover:text-zinc-900'
-              }`}
-            >
-              {item.name}
-              <span className={`absolute -bottom-1 left-0 w-full h-[1px] bg-rose-600 origin-right transition-transform duration-500 scale-x-0 group-hover:scale-x-100 group-hover:origin-left ${currentView === item.view ? 'scale-x-100' : ''}`}></span>
-            </button>
-          ))}
+        <nav className="hidden xl:flex items-center gap-5">
+          <NavButton item={firstInternalLink} />
           
           <div className="w-[1px] h-3 bg-zinc-200 mx-1"></div>
 
@@ -71,6 +71,10 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, user, onLogout })
               <svg className="w-2.5 h-2.5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
             </a>
           ))}
+          
+          <div className="w-[1px] h-3 bg-zinc-200 mx-1"></div>
+
+          <NavButton item={lastInternalLink} />
           
           <div className="w-[1px] h-3 bg-zinc-200 mx-1"></div>
           
